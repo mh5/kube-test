@@ -1,0 +1,4 @@
+.dockerignore
+.env
+drkiq/node_modules/
+drkiq/vendor/bundle/
