@@ -1,0 +1,55 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: drkiq-redis
+  labels:
+    tier: cache
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 2Gi
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      tier: cache
+  template:
+    metadata:
+      labels:
+        tier: cache
+    spec:
+      containers:
+      - name: redis
+        image: redis:5.0.7
+        ports:
+          - containerPort: 6379
+        volumeMounts:
+        - name: drkiq-redis
+          mountPath: /var/lib/redis/data
+      volumes:
+      - name: drkiq-redis
+        persistentVolumeClaim:
+          claimName: drkiq-redis
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+   name: redis-service
+spec:
+  ports:
+  - port: 6379
+    targetPort: 6379
+  selector:
+    tier: cache
+
+
