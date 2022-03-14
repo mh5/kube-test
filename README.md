@@ -17,10 +17,6 @@ cluster backed by Docker.
 	docker build --tag drkiq:latest .
 	cd ../
 
-	# load the image into the local registry of the minikube cluster
-	# in a real deployment, we would need to push the image into a proper registry
-	minikube image load drkiq:latest
-
 	# to create the required kubernetes secrets, customize the secrets-example.yml file and apply it
 	cp secrets-example.yml secrets.yml
 	kubectl apply -f secrets.yml
@@ -37,7 +33,10 @@ cluster backed by Docker.
 
 	kubectl apply -f redis.yml
 	# sanity check: ssh into minikube and ensure that you're able to telnet on redis-service:6379
-
+	
+	# note that this step makes use of the local drkiq image
+	# if you're using VirtualBox instead of Docker, you may need to run `minikube image load drkiq:latest` first
+	# in an actual deployment, this we should push/pull to/from an actual registry
 	kubectl apply -f drkiq.yml
 	# sanity check 1: bash into the pod and curl localhost:8010, you should see an error about the domain not being whitelisted
 	# sanity check 2: make sure you can telnet into pg-service and the redis-service from the pod
