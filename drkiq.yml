@@ -15,7 +15,7 @@ spec:
     spec:
       initContainers:
       - name: init-myservice
-        image: ib-task_drkiq:latest
+        image: drkiq:latest
         imagePullPolicy: Never
         # TODO: this should be replaced by a more complex script that prevent running the migration multiple times
         # one way is to obtain a lock over some object in the database first
