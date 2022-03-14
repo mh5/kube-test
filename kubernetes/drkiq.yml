@@ -11,6 +11,7 @@ spec:
     metadata:
       labels:
         tier: app
+        app: drkiq
     spec:
       initContainers:
       - name: init-myservice
@@ -65,6 +66,6 @@ spec:
   - port: 8010
     targetPort: 8010
   selector:
-    tier: app
+    app: drkiq
 
 

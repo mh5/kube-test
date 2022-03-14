@@ -1,0 +1,30 @@
+# some of the dependencies in the tutorial such as the db access do not seem to be required
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sidekiq
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      tier: app
+  template:
+    metadata:
+      labels:
+        tier: app
+    spec:
+      containers:
+      - name: sidekiq
+        image: ib-task_drkiq:latest
+        command: ["bundle", "exec", "sidekiq"]
+        imagePullPolicy: Never
+        envFrom:
+        - configMapRef:
+            name: drkiq-env
+        env:
+          - name: SECRET_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: drkiqsecrettoken
+                key: SECRET_TOKEN
