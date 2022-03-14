@@ -18,6 +18,7 @@ services:
  drkiq:
      build:
        context: rails-app/
+     image: drkiq:latest
      links:
        - postgres
        - redis
