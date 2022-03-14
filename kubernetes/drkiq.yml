@@ -1,0 +1,66 @@
+apiVersion: v1
+data:
+  SECRET_TOKEN: YThmMDUzZjcwODE3YTE3ZTVhNzA2ODdiMGI2OTNkYTRiMDQ4OGM5Nzc3Y2VjM2E5YzEwYmI1N2YxNjk0MjBkMwo=
+kind: Secret
+metadata:
+  name: drkiqsecrettoken
+  namespace: default
+type: Opaque
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: drkiq
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      tier: app
+  template:
+    metadata:
+      labels:
+        tier: app
+    spec:
+      containers:
+      - name: drkiq
+        image: ib-task_drkiq:latest # make sure you've run 'minikube image load ib-task_drkiq:latest' first
+        imagePullPolicy: Never # to be removed if we use a real registry
+        ports:
+          - containerPort: 8010
+        env:
+          - name: WORKER_PROCESSES
+            value: "1"
+
+          - name: LISTEN_ON
+            value: 0.0.0.0:8010
+
+          - name: DATABASE_URL
+            value: postgresql://drkiq:test_db_password@pg-service:5432/drkiq?encoding=utf8&pool=5&timeout=5000
+
+          - name: CACHE_URL
+            value: redis://redis-service:6379/0
+
+          - name: JOB_WORKER_URL
+            value: redis://redis-service:6379/0
+
+          - name: SECRET_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: drkiqsecrettoken
+                key: SECRET_TOKEN
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+   name: drkiq
+spec:
+  ports:
+  - port: 8010
+    targetPort: 8010
+  selector:
+    tier: app
+
+
