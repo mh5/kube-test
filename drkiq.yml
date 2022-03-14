@@ -36,7 +36,7 @@ spec:
 
       containers:
       - name: drkiq
-        image: ib-task_drkiq:latest # make sure you've run 'minikube image load ib-task_drkiq:latest' first
+        image: drkiq:latest # make sure you've run 'minikube image load ib-task_drkiq:latest' first
         imagePullPolicy: Never # to be removed if we use a real registry
         ports:
           - containerPort: 8010

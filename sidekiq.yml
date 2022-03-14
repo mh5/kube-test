@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: sidekiq
-        image: ib-task_drkiq:latest
+        image: drkiq:latest
         command: ["bundle", "exec", "sidekiq"]
         imagePullPolicy: Never
         envFrom:
