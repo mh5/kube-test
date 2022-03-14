@@ -23,6 +23,20 @@ spec:
       labels:
         tier: app
     spec:
+      initContainers:
+      - name: init-myservice
+        image: ib-task_drkiq:latest
+        imagePullPolicy: Never
+        command: ['sh', '-c', 'rake db:reset && rake db:migrate']
+        env:
+          - name: DATABASE_URL
+            value: postgresql://drkiq:test_db_password@pg-service:5432/drkiq?encoding=utf8&pool=5&timeout=5000
+
+          - name: SECRET_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: drkiqsecrettoken
+                key: SECRET_TOKEN
       containers:
       - name: drkiq
         image: ib-task_drkiq:latest # make sure you've run 'minikube image load ib-task_drkiq:latest' first
