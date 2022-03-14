@@ -18,11 +18,6 @@ services:
  drkiq:
      build:
        context: rails-app/
-       args:
-         USER_ID: "${USER_ID:-1000}"
-         GROUP_ID: "${GROUP_ID:-1000}"
-     volumes:
-       - ./rails-app/drkiq:/opt/app
      links:
        - postgres
        - redis
