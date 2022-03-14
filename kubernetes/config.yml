@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: drkiq-env
+  namespace: default
+data:
+  WORKER_PROCESSES: "1"
+  LISTEN_ON: 0.0.0.0:8010
+  DATABASE_URL: postgresql://drkiq:test_db_password@pg-service:5432/drkiq?encoding=utf8&pool=5&timeout=5000
+  CACHE_URL: redis://redis-service:6379/0
+  JOB_WORKER_URL: redis://redis-service:6379/0

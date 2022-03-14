@@ -28,10 +28,10 @@ spec:
         image: ib-task_drkiq:latest
         imagePullPolicy: Never
         command: ['sh', '-c', 'rake db:reset && rake db:migrate']
+        envFrom:
+        - configMapRef:
+            name: drkiq-env
         env:
-          - name: DATABASE_URL
-            value: postgresql://drkiq:test_db_password@pg-service:5432/drkiq?encoding=utf8&pool=5&timeout=5000
-
           - name: SECRET_TOKEN
             valueFrom:
               secretKeyRef:
@@ -43,22 +43,10 @@ spec:
         imagePullPolicy: Never # to be removed if we use a real registry
         ports:
           - containerPort: 8010
+        envFrom:
+        - configMapRef:
+            name: drkiq-env
         env:
-          - name: WORKER_PROCESSES
-            value: "1"
-
-          - name: LISTEN_ON
-            value: 0.0.0.0:8010
-
-          - name: DATABASE_URL
-            value: postgresql://drkiq:test_db_password@pg-service:5432/drkiq?encoding=utf8&pool=5&timeout=5000
-
-          - name: CACHE_URL
-            value: redis://redis-service:6379/0
-
-          - name: JOB_WORKER_URL
-            value: redis://redis-service:6379/0
-
           - name: SECRET_TOKEN
             valueFrom:
               secretKeyRef:
