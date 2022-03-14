@@ -17,7 +17,9 @@ spec:
       - name: init-myservice
         image: ib-task_drkiq:latest
         imagePullPolicy: Never
-        command: ['sh', '-c', 'rake db:reset && rake db:migrate']
+        # TODO: this should be replaced by a more complex script that prevent running the migration multiple times
+        # one way is to obtain a lock over some object in the database first
+        command: ['sh', '-c', 'rake db:reset && rake db:migrate'] 
         envFrom:
         - configMapRef:
             name: drkiq-env
