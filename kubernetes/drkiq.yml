@@ -1,14 +1,3 @@
-apiVersion: v1
-data:
-  SECRET_TOKEN: YThmMDUzZjcwODE3YTE3ZTVhNzA2ODdiMGI2OTNkYTRiMDQ4OGM5Nzc3Y2VjM2E5YzEwYmI1N2YxNjk0MjBkMwo=
-kind: Secret
-metadata:
-  name: drkiqsecrettoken
-  namespace: default
-type: Opaque
-
----
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:

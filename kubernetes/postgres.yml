@@ -1,35 +1,3 @@
-# The password is version controlled for demo purposes
-
-# the POSTGRES_USER and POSTGRES_PASSWORD variables are used by the postgres deployment to initialize the username and password
-# the POSTGRES_URL is used by the Ruby application, and it contains the same username and password (as well as the service name)
-# there is probably a smarter way to handle this in Rails to avoid the redundancy, but I'm not aware of it yet
-apiVersion: v1
-data:
-  POSTGRES_USER: ZHJraXE=
-  POSTGRES_PASSWORD: dGVzdF9kYl9wYXNzd29yZA==
-  POSTGRES_URL: cG9zdGdyZXNxbDovL2Rya2lxOnRlc3RfZGJfcGFzc3dvcmRAcGctc2VydmljZTo1NDMyL2Rya2lxP2VuY29kaW5nPXV0ZjgmcG9vbD01JnRpbWVvdXQ9NTAwMA==
-kind: Secret
-metadata:
-  name: postgrespassword
-  namespace: default
-type: Opaque
-
----
-
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: drkiq-postgres
-  labels:
-    tier: db
-spec:
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 1Gi
----
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
