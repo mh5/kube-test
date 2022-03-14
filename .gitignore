@@ -1,3 +1,6 @@
+secrets.yml
+config.yml
+
 *.rbc
 capybara-*.html
 .rspec
