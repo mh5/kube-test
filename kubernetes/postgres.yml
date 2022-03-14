@@ -1,0 +1,80 @@
+# The password is version controlled for demo purposes
+
+apiVersion: v1
+data:
+  POSTGRES_USER: ZHJraXEK
+  POSTGRES_PASSWORD: dGVzdF9kYl9wYXNzd29yZA==
+kind: Secret
+metadata:
+  name: postgrespassword
+  namespace: default
+type: Opaque
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: drkiq-postgres
+  labels:
+    tier: db
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pg-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      tier: db
+  template:
+    metadata:
+      labels:
+        tier: db
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:12.1
+        ports:
+          - containerPort: 5432
+        volumeMounts:
+        - name: drkiq-postgres
+          mountPath: /var/lib/postgresql/data
+        env:
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: postgrespassword
+                key: POSTGRES_PASSWORD
+          - name: POSTGRES_USER
+            valueFrom:
+              secretKeyRef:
+                name: postgrespassword
+                key: POSTGRES_USER
+      volumes:
+      - name: drkiq-postgres
+        persistentVolumeClaim:
+          claimName: drkiq-postgres
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+   name: pg-service
+spec:
+  ports:
+  - port: 5432
+    targetPort: 5432
+  selector:
+    tier: db
+
+
