@@ -37,6 +37,13 @@ spec:
               secretKeyRef:
                 name: drkiqsecrettoken
                 key: SECRET_TOKEN
+
+          - name: DATABASE_URL
+            valueFrom:
+              secretKeyRef:
+                name: postgrespassword
+                key: POSTGRES_URL
+
       containers:
       - name: drkiq
         image: ib-task_drkiq:latest # make sure you've run 'minikube image load ib-task_drkiq:latest' first
@@ -52,6 +59,12 @@ spec:
               secretKeyRef:
                 name: drkiqsecrettoken
                 key: SECRET_TOKEN
+
+          - name: DATABASE_URL
+            valueFrom:
+              secretKeyRef:
+                name: postgrespassword
+                key: POSTGRES_URL
 ---
 
 apiVersion: v1
